@@ -19,6 +19,9 @@ import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.event.HyperlinkListener;
+
+import BBD.Conexion;
+
 import javax.swing.event.HyperlinkEvent;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
@@ -34,6 +37,11 @@ import javax.swing.JList;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Cursor;
 import java.beans.PropertyChangeListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
@@ -43,7 +51,7 @@ public class prueba_Interfaz extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField correo;
 	static prueba_Interfaz framePrincipal;
 	private JTextField textDNI;
 	/**
@@ -84,7 +92,7 @@ public class prueba_Interfaz extends JFrame {
 		txtpninicieSesin.setBackground(new Color(0, 128, 0));
 		txtpninicieSesin.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 12));
 		txtpninicieSesin.setText("¡Inicie Sesión!");
-		txtpninicieSesin.setBounds(164, 11, 171, 20);
+		txtpninicieSesin.setBounds(176, 11, 171, 20);
 		contentPane.add(txtpninicieSesin);
 		
 		JTextPane yaTiene = new JTextPane();
@@ -94,22 +102,25 @@ public class prueba_Interfaz extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JFrame frame = new Registro();
 				frame.setVisible(true);
-				framePrincipal.setVisible(false);
+				dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {//cuando entra en su rango con el click
 				yaTiene.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 13));
+				yaTiene.setBounds(24,8,153,20);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {//cuando sale en su rango con el click
 				yaTiene.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 12));
+				yaTiene.setBounds(24,11,153,20);
+				
 			}
 		});
 		
 		yaTiene.setText("¿Ya tiene una cuenta?");
 		yaTiene.setForeground(new Color(192, 192, 192));
 		yaTiene.setBackground(new Color(0, 128, 0));
-		yaTiene.setBounds(24, 11, 177, 20);
+		yaTiene.setBounds(24, 11, 153, 20);
 		contentPane.add(yaTiene);
 		
 		JTextPane txtpnTratamiento = new JTextPane();
@@ -139,8 +150,7 @@ public class prueba_Interfaz extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(botonSR.isSelected()) {
 					botonSRA.setSelected(true);
-					botonSR.setSelected(false);
-					
+					botonSR.setSelected(false);				
 				}
 			}
 		});
@@ -148,8 +158,7 @@ public class prueba_Interfaz extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(botonSRA.isSelected()) {
 					botonSRA.setSelected(false);
-					botonSR.setSelected(true);
-					
+					botonSR.setSelected(true);	
 				}
 			}
 		});
@@ -162,7 +171,7 @@ public class prueba_Interfaz extends JFrame {
 		txtpnApellidos.setBackground(new Color(250, 250, 210));
 		txtpnApellidos.setFont(new Font("SansSerif", Font.BOLD, 12));
 		txtpnApellidos.setText("Apellidos");
-		txtpnApellidos.setBounds(146, 100, 58, 20);
+		txtpnApellidos.setBounds(143, 100, 58, 20);
 		contentPane.add(txtpnApellidos);
 		
 		JTextPane txtpnDireccinDeCorreo = new JTextPane();
@@ -203,10 +212,11 @@ public class prueba_Interfaz extends JFrame {
 		textField_1.setBounds(222, 100, 345, 20);
 		contentPane.add(textField_1);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(222, 131, 345, 20);
-		contentPane.add(textField_2);
+		correo = new JTextField();
+
+		correo.setColumns(10);
+		correo.setBounds(222, 131, 345, 20);
+		contentPane.add(correo);
 		
 		JButton botonCont = new JButton("Mostrar Contraseña");
 	
@@ -228,6 +238,7 @@ public class prueba_Interfaz extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
+		
 		lblNewLabel_1.setIcon(new ImageIcon(prueba_Interfaz.class.getResource("/imagenes/images-removebg-preview (1).png")));
 		lblNewLabel_1.setBounds(10, 179, 139, 92);
 		contentPane.add(lblNewLabel_1);
@@ -269,13 +280,16 @@ public class prueba_Interfaz extends JFrame {
 		textDNI.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if(textDNI.getText().length()==8) {	
-					textDNI.getText().matches("[0-9]*");
-					JOptionPane.showMessageDialog(contentPane,"Solo Numeros", "Error Dni ",JOptionPane.ERROR_MESSAGE);
-				}else {
-					JOptionPane.showMessageDialog(contentPane,"Dni sin letra(8 valores)", "Error Dni ",JOptionPane.ERROR_MESSAGE);
+				if(textDNI.getText().length()!=8) {	
+					JOptionPane.showMessageDialog(contentPane,"Dni sin letra(8 valores)", "Informacion ",JOptionPane.INFORMATION_MESSAGE);
 				}
+				if(textDNI.getText().length()==8) {	
+					if(!textDNI.getText().matches("[0-9]*")) {
+						JOptionPane.showMessageDialog(contentPane,"Solo Numeros", "Error Dni ",JOptionPane.ERROR_MESSAGE);
+					}
+					}
 			}
+					
 		});
 	
 		textDNI.setColumns(10);
@@ -292,21 +306,43 @@ public class prueba_Interfaz extends JFrame {
 		});
 		
 		btnNewButton.addActionListener(e -> {
-			
-				if(contras.getPassword().length==0 || textField.getText().equals("") || textField_1.getText().equals("")  || textField_2.getText().equals("") || terminos.isSelected()==false || textDNI.getText().length()!=8) {
+				if(contras.getPassword().length==0 || textField.getText().equals("") || textField_1.getText().equals("")  || correo.getText().equals("") || terminos.isSelected()==false || textDNI.getText().length()!=8) {
+					if(!correo.getText().matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+						JOptionPane.showMessageDialog(contentPane,"Error Email", "Error ",JOptionPane.ERROR_MESSAGE);
+					}
 					if(terminos.isSelected()==false) {
-						JOptionPane.showMessageDialog(null, "Requiere aceptar los terminos");
+					JOptionPane.showMessageDialog(contentPane,"Requiere Aceptar", "Error ",JOptionPane.ERROR_MESSAGE);
 					}else {
-					JOptionPane.showMessageDialog(null, "Faltan Campos por rellenar");
+					JOptionPane.showMessageDialog(contentPane,"Faltan Campos por rellenar", "Informacion ",JOptionPane.INFORMATION_MESSAGE);
+					
 					}
 					if(textDNI.getText().length()!=8) {
-						JOptionPane.showMessageDialog(null, "DNI sin letra (maximo 8 caracteres)");
+						JOptionPane.showMessageDialog(contentPane,"DNI sin letra (maximo 8 caracteres)", "Error ",JOptionPane.ERROR_MESSAGE);
 					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Todo Correcto");
-				}
-			
-		});
+					JOptionPane.showMessageDialog(contentPane,"Todo Correcto", "Correcto ",JOptionPane.INFORMATION_MESSAGE);
+					
+				    Agregar agregar = new Agregar();
+				   
+				    String respuesta="";
+				    if(botonSR.isSelected()) {
+				    	respuesta="sr";
+				    }else if(botonSRA.isSelected()) {
+				    	respuesta="sra";
+				    }else {
+				    	respuesta="sin especificar";
+				    }
+				    
+				    agregar.Registrar(textField.getText(), textDNI.getText(), textField_1.getText(), correo.getText(), contras.getText(), respuesta, boxCity.getSelectedItem().toString());
+					
+					JFrame frame = new Registro();
+					frame.setVisible(true);
+					dispose();
+					
+					
+				}	
+		}
+		);
 		
 	}
 }
