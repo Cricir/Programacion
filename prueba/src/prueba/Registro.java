@@ -152,7 +152,6 @@ public class Registro extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JFrame frame = new prueba_Interfaz();
 				frame.setVisible(true);
-				frameInicio.setVisible(false);
 				dispose();
 			}
 		});
@@ -187,6 +186,15 @@ public class Registro extends JFrame {
 				}
 			}else {
 				JOptionPane.showMessageDialog(contentPane,"Todo Correcto", "Correcto ",JOptionPane.INFORMATION_MESSAGE);
+				 final Comprobacion comprobar = new Comprobacion();
+				 if ( comprobar.Comprobar(dni.getText(), password1.getText())) {
+					 JFrame frame = new PaginaComprobar();
+					 frame.setVisible(true);
+					 dispose();
+				}else {
+					JOptionPane.showMessageDialog(contentPane,"El usuario no es correcto", "Error ",JOptionPane.ERROR_MESSAGE);
+				}
+			
 			}
 			}
 		});

@@ -322,8 +322,6 @@ public class prueba_Interfaz extends JFrame {
 				}else {
 					JOptionPane.showMessageDialog(contentPane,"Todo Correcto", "Correcto ",JOptionPane.INFORMATION_MESSAGE);
 					
-				    Agregar agregar = new Agregar();
-				   
 				    String respuesta="";
 				    if(botonSR.isSelected()) {
 				    	respuesta="sr";
@@ -332,13 +330,12 @@ public class prueba_Interfaz extends JFrame {
 				    }else {
 				    	respuesta="sin especificar";
 				    }
-				    
+				    final Agregar agregar = new Agregar();
 				    agregar.Registrar(textField.getText(), textDNI.getText(), textField_1.getText(), correo.getText(), contras.getText(), respuesta, boxCity.getSelectedItem().toString());
 					
 					JFrame frame = new Registro();
 					frame.setVisible(true);
 					dispose();
-					
 					
 				}	
 		}

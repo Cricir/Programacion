@@ -19,45 +19,7 @@ public class Agregar {
 		
 		try {
 			cn = conexion.conectar();
-			stm = cn.createStatement();
-			rs = stm.executeQuery("SELECT * FROM usuariosreg");
-			
-			while (rs.next()) {
-				String nombre = rs.getString(1);
-				String dni = rs.getString(2);
-				String apellidos = rs.getString(3);
-				String direccion = rs.getString(4);
-				String contraseña = rs.getString(5);
-				String trato = rs.getString(6);
-				String ciudad = rs.getString(7);
-				
-				System.out.println(nombre + " - " + apellidos + " - " + direccion + " - " + contraseña + " - " + dni + " - " + trato + " - " + ciudad );
-			}
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			
-		} finally {
-			try {
-				if (rs!= null) {
-					rs.close();
-				}
-				
-				if (stm != null) {
-					stm.close();
-				}
-				
-				if (cn != null) {
-					cn.close();
-				}
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-		
-		try {
-			cn = conexion.conectar();
-			PreparedStatement stm2 = cn.prepareStatement("INSERT INTO usuariosreg(nombre,apellidos,direccion,contraseña,dni,trato,ciudad) VALUES (?,?,?,?,?,?,?)");
+			PreparedStatement stm2 = cn.prepareStatement("INSERT INTO usuariosreg(nombre,dni,apellidos,direccion,contraseña,trato,ciudad) VALUES (?,?,?,?,?,?,?)");
 			stm2.setString(1 , nombreI);
 			stm2.setString(2 , dniI);
 			stm2.setString(3 , apellidosI);

@@ -87,41 +87,11 @@ public class TestConexion {
 			}
 		}
 		
-		try {
-			cn = conexion.conectar();
-			PreparedStatement stm2 = cn.prepareStatement("UPDATE usuariosreg SET nombre = ?  WHERE dni = ?");
-			stm2.setString(1 , "NNN");
-			stm2.setString(2 , "dni");
-			
-			stm2.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			
-		} finally {
-			try {
-				if (rs!= null) {
-					rs.close();
-				}
-				
-				if (stm != null) {
-					stm.close();
-				}
-				
-				if (cn != null) {
-					cn.close();
-				}
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-		
-//		
 //		try {
 //			cn = conexion.conectar();
-//			PreparedStatement stm2 = cn.prepareStatement("DELETE FROM usuariosreg  WHERE dni = ?");
-//			stm2.setString(1 , "dni");
-//			
+//			PreparedStatement stm2 = cn.prepareStatement("UPDATE usuariosreg SET nombre = ?  WHERE dni = ?");
+//			stm2.setString(1 , "NNN");
+//			stm2.setString(2 , "dni");
 //			
 //			stm2.executeUpdate();
 //			
